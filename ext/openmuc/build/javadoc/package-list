@@ -1,0 +1,8 @@
+org.openmuc.framework.authentication
+org.openmuc.framework.config
+org.openmuc.framework.data
+org.openmuc.framework.dataaccess
+org.openmuc.framework.datalogger.spi
+org.openmuc.framework.driver.spi
+org.openmuc.framework.server.spi
+org.openmuc.framework.webui.spi

@@ -1,0 +1,16 @@
+<SetRequest>
+  <SetRequestNormal>
+    <InvokeIdAndPriority Value="C1" />
+    <AttributeDescriptor>
+      <ClassId Value="AABB" />
+      <InstanceId Value="112233445566" />
+      <AttributeId Value="02" />
+    </AttributeDescriptor>
+    <Value>
+      <Structure Qty="02">
+        <Integer Value="11" />
+        <Long Value="1122" />
+      </Structure>
+    </Value>
+  </SetRequestNormal>
+</SetRequest>

@@ -1,0 +1,22 @@
+v0.10.0 9-Nov-2015
+------------------
+- changed license from LGPL to GPLv3, dual licensing possible
+- api, client and sample projects were merged to a single
+  project/library called jdlms
+- api was completely revised
+- 62056-21 mode change exchange completely refactored
+- Added support for High Level Security (HLS) 5 that uses GMAC
+- fixed bug in AxdrInteger, resulting in wrong decoding of lager
+  unsigned values. thanks to Justin Forder from cgi
+- changed unnumbered information decoding in hdlc thanks to Niels
+  Kowala
+- BER decoding is now done by jASN1 library, jdlms therefor depends on jasn1
+- fixed bug decoding hdlc address (thanks to Michal Kowalski from
+  Atrem)
+- fixed bug when converting ObjectID to string (thanks to Michal
+  Kowalski from Atrem)
+- removed support for UDP
+
+v0.9.0 26-Jul-2013
+------------------
+- first release

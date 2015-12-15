@@ -1,0 +1,46 @@
+//---------------------------------------------------------------------------;
+// ADK/HD comments : author : michael@prepaidmeters.com : 2015/12/03 : 15:16 PM
+//---------------------------------------------------------------------------;
+
+ - ADK/HD system. I've managed to untangle the fundamental client/server messages,
+   which are passed from the client to the meter. 
+
+   (Although I've only managed to identify the first sequence so far)
+
+   eg,
+
+   software version 1 = 00 01.
+
+   The byte order is modified and I've cast the resulting data (bytes) into a 
+   hexidecimal format. There are a variety of sequences, each specifying
+   version, client and server versions, etc. 
+
+   I've managed to write a basic system to deal with external messages.
+   ie, the first steps of the ADK API. The library is linked with the
+   ADK plug-in. Currently, I have a connect() method which deals with tcp
+   communication via the client & meter. By simplifying the connection
+   handshake, it might be possible to provide support for multiple
+   protocols. (As long as the client/server stream remains intact)
+
+//---------------------------------------------------------------------------;
+// ADK/HD comments      : author : michael@prepaidmeters.com
+//                      : 2015/12/02 : 10:07 AM
+//---------------------------------------------------------------------------;
+
+ - 2 December, 2015 :
+
+   I am starting to write the ADK interface. Initially, I want to define methods
+   which are accessible to an external system. The library (ADK) is linked into
+   the users project. Methods are called and a stack is initiated which deals
+   with each specific function call. 
+
+   The first of these methods is the connect function which is called by the
+   register function, see as follows :
+
+   c_dlms_adk_register_protocol (protocol argument) ...
+      connect (protocol argument) ...
+
+   Currently, I am using the DLMS/COSEM system as an initial entry point with
+   respect to protocol usage.
+
+   

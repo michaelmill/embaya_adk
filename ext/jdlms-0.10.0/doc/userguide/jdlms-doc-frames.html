@@ -1,0 +1,898 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
+<title>jDLMS User Guide</title>
+<style type="text/css">
+/*
+ * AsciiDoc 'volnitsky' theme for xhtml11 and html5 backends.
+ * Based on css from http://volnitsky.com, which was in turn based on default
+ * theme from AsciiDoc
+ *
+ * FIXME: The styling is still a bit rough in places.
+ *
+ */
+
+/* Default font. */
+body {
+  font-family: Georgia,"Times New Roman",Times,serif;
+
+}
+
+/* Title font. */
+
+h3,h4, h5, h6 {
+  color: #010101;
+   size:12px;
+}
+
+#toc a {
+    border-bottom: 1px dotted #999999;
+    color: #04392C !important;
+    text-decoration: none !important;
+}
+#toc a:hover {
+    border-bottom: 1px solid #049674;
+    color: #049674 !important;
+    text-decoration: none !important;
+}
+
+em {
+  font-style: italic;
+/*  color: #0D6C55;*/
+  color: #4E4E4E;
+}
+
+strong {
+  font-weight: bold;
+/*  color: #0D6C55;*/
+ color: #000000;
+}
+
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid #0D6C55;
+}
+
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #0D6C55;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+#footer {
+  font-size: small;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+div.tableblock, div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+div.admonitionblock {
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #0D6C55;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid silver;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid silver;
+  background: #f4f4f4;
+  padding: 0.5em;
+}
+
+div.quoteblock {
+  padding-left: 2.0em;
+  margin-right: 10%;
+}
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock {
+  padding-left: 2.0em;
+  margin-right: 10%;
+}
+div.verseblock > pre.content {
+  font-family: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #0D6C55;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 2px solid silver;
+}
+
+div.exampleblock > div.content {
+  border-left: 2px solid silver;
+  padding: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: #0D6C55;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+div.tableblock > table {
+  border: 3px solid #0D6C55;
+}
+thead {
+  font-weight: bold;
+  color: #0D6C55;
+}
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: #0D6C55;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toctitle {
+  color: #049674;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 { margin-top: 0; margin-bottom: 0; }
+div.toclevel1 { margin-top: 0.3em; margin-left: 0; font-size: 1.0em; }
+div.toclevel2 { margin-top: 0.25em; margin-left: 2em; font-size: 0.9em; }
+div.toclevel3 { margin-left: 4em; font-size: 0.8em; }
+div.toclevel4 { margin-left: 6em; font-size: 0.8em; }
+
+
+
+.monospaced, tt, div.listingblock > div.content {
+  font-family:  Consolas, "Andale Mono", "Courier New", monospace;
+  color: #004400;
+  background: #f4f4f4;
+  max-width: 80em;
+  line-height: 1.2em;
+}
+
+.paragraph p  {
+  line-height: 1.5em;
+  margin-top: 1em;
+}
+
+/*.paragraph p, li, dd, .content { max-width: 85em; }
+.admonitionblock               { max-width: 35em; }*/
+
+div.sectionbody div.ulist > ul > li {
+  list-style-type: square;
+  color: #aaa;
+}
+  div.sectionbody div.ulist >  ul > li > * {
+    color: black;
+    /*font-size: 50%;*/
+  }
+
+
+div.sectionbody div.ulist > ul > li div.ulist > ul > li {
+  color: #ccd ;
+}
+  div.sectionbody div.ulist > ul > li div.ulist > ul > li > * {
+    color: black ;
+  }
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #049674;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #0D6C55;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #0D6C55;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+
+
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.5em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+    color: #aaaaaa;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>jDLMS User Guide</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_intro">1. Intro</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>jDLMS is a Java implementation of the DLMS/COSEM protocol. It can be
+used to develop individual DLMS/COSEM client/master applications that
+access server/slave devices. The jDLMS library supports communication
+over HDLC/serial and TCP/IP.</p></div>
+<div class="sect2">
+<h3 id="_distribution">1.1. Distribution</h3>
+<div class="paragraph"><p>After extracting the distribution tar file the jDLMS library can be
+found in the folder "build/libs-all/". The javadoc for jDLMS can be
+found in the folder "build/docs/javadoc/". For license information check the
+"license/" folder in the distribution.</p></div>
+<div class="sect3">
+<h4 id="_dependencies">1.1.1. Dependencies</h4>
+<div class="paragraph"><p>Besides the jDLMS library the folder "build/libs-all/" contains the
+following external libraries:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>jasn1</strong> - a library for ASN.1 BER encoding/decoding, LGPLv2.1 or
+   later, <a href="http://www.openmuc.org">http://www.openmuc.org</a>
+</p>
+</li>
+<li>
+<p>
+<strong>RXTX</strong> - This library for serial communication is only needed by
+   jDLMS if communication over HDLC/serial is used. RXTX is licensed
+   under LGPL(v2 or later). RXTX consists of a Java part located in
+   the dependencies folder of the distribution and a native part. Note
+   that you have to install the native part of RXTX as explained in
+   our FAQs: <a href="http://www.openmuc.org/index.php?id=72#faq_rxtx">http://www.openmuc.org/index.php?id=72#faq_rxtx</a>
+</p>
+</li>
+<li>
+<p>
+<strong>Bouncy Castle (bcprov)</strong> - A library needed for security algorithms. It is
+   only needed if jDLMS is used with encryption or authentication
+   enabled.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The "dependencies/" folder in the distribution contains more detailed
+license and copyright information about these dependencies.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_command_line_application">1.1.2. Command Line Application</h4>
+<div class="paragraph"><p>A command line application is part of the library that can be used to
+connect, read, write and scan DLMS devices. You can execute it using
+the "jdlms-clientapp" script found in the folder run-scripts/.
+Executing the script without any parameters will print help
+information to the screen.</p></div>
+<div class="paragraph"><p>Instead of running the application from the terminal you can create
+Eclipse project files as explained here:
+<a href="http://www.openmuc.org/index.php?id=72#faq_gradle">http://www.openmuc.org/index.php?id=72#faq_gradle</a> and run it from
+within Eclipse.</p></div>
+</div>
+<div class="sect3">
+<h4 id="_build_scripts">1.1.3. Build Scripts</h4>
+<div class="paragraph"><p>We use the Gradle build automation tool. The distribution contains a
+fully functional gradle build file ("build.gradle"). Thus if you
+changed code and want to rebuild a library you can do it easily with
+Gradle. Also if you want to import our software into Eclipse you can
+easily create Eclipse project files using Gradle. Just follow the
+instructions on our FAQ site:
+<a href="http://www.openmuc.org/index.php?id=72#faq_gradle">http://www.openmuc.org/index.php?id=72#faq_gradle</a></p></div>
+</div>
+<div class="sect3">
+<h4 id="_a_xdr_compiler">1.1.4. A-XDR Compiler</h4>
+<div class="paragraph"><p>Besides the jDLMS project the distribution contains a subproject named
+A-XDR Compiler. It is an application developed to automatically
+compile the DLMS/COSEM ASN.1 data structures and generate classes that
+can be used to encode/decode A-XDR messages. The generated classes are
+part of jDLMS. You will <strong>not</strong> need this application if you simply want
+to use the jDLMS library.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_dlms_cosem_works">2. How DLMS/COSEM Works</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>DLMS/COSEM is an object based protocol specifically designed to
+communicate in a generic way with smart meters over multiple
+communication protocols. DLMS/COSEM supports communication over
+HDLC/serial, TCP and UDP.</p></div>
+<div class="sect2">
+<h3 id="_logical_devices">2.1. Logical Devices</h3>
+<div class="paragraph"><p>In DLMS/COSEM, a physical smart meter device can host several so
+called logical devices. These logical devices are addressed by a
+separate number up to 2 bytes of length. As an example, a multi-energy meter
+can consist of one logical device for electricity metering on address
+18 and another one for gas metering on address 67. No matter what type
+of smart meter it is, a DLMS/COSEM device must contain a special
+logical device called the <strong>management logical device</strong> at address
+1. The content of this device may vary, but it must <strong>at least</strong> have a
+list of all logical devices inside the physical smart meter. You are
+always connecting to a single logical device with DLMS/COSEM.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_client_address">2.2. Client Address</h3>
+<div class="paragraph"><p>Both server and client need an address to be uniquely identified. The
+server address that identifies a device consists of the physical
+address of the device (e.g. an IP address + port), as well as the
+address of the logical device (e.g. 1 for the management logical
+device).</p></div>
+<div class="paragraph"><p>On the other hand, the address of the client depends on the
+communication protocol being used but always consists at least of one
+Byte to identify the nature of the client. In most cases, this Byte
+determines what objects you can read or write and what form of
+authentication is necessary to connect to the device. A special
+identifier is the number 16, which refers to the public client. This
+client address has the lowest rights and doesn&#8217;t need any
+authentication in most cases.</p></div>
+<div class="paragraph"><p>If HDLC is used as communication layer, the client address only
+consists of this single byte. Using TCP or UDP, the address
+additionaly consists of the IP and port of the client application.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_object_addresses">2.3. Object addresses</h3>
+<div class="paragraph"><p>As previously mentioned, DLMS/COSEM is an object based protocol. That
+means that the data of a device is grouped in objects. These objects
+are always instances of clearly defined <strong>interface classes</strong>, similar
+to classes in object oriented programming languages. All available
+classes as well as their exact structure can be found in IEC 62056-62.</p></div>
+<div class="paragraph"><p>Objects can be addressed in two ways, depending on the connected smart
+meter. The recommended way is using the <strong>logical name</strong> of an object. A
+logical name, also known as OBIS code, is a 6 Byte long number that
+uniquely addresses a certain object over all smart meters. For
+example, the clock of a smart meter is always reachable under the
+address [0, 0, 1, 0, 0, 255]. The DLMS UA regulates what objects are
+under what addresses. A list of all possible logical names is
+published by the DLMS UA under
+<a href="http://www.dlms.com/documentation/listofstandardobiscodesandmaintenanceproces/index.html">the
+following site</a> as an Excel sheet.</p></div>
+<div class="paragraph"><p>The other way to address an object is by means of the so called <strong>short
+address</strong>. Short addresses are used for small devices and should only be
+used if the connected smart meter cannot communicate using logical
+names. The short address is a simple 2 Byte long number, instead of
+the 6 Byte long OBIS code mentioned above. The address space of short
+addresses is not regulated like the logical names, meaning that the
+same address can lead to different objects on different devices.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_accessing_data">2.4. Accessing data</h3>
+<div class="paragraph"><p>After the connection to a logical device has been established,
+communication occurs using the request-response model, meaning that
+the client requests a specific action and the device sends the
+appropriate response back to the client.</p></div>
+<div class="paragraph"><p>Even though the data of the remote device is addressed in an object
+based fashion, data is accessed attribute based. So, in order to send
+a request, you have to send 3 parameters for uniquely identify the
+data and access it:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Class ID
+</p>
+</li>
+<li>
+<p>
+Address of the object
+</p>
+</li>
+<li>
+<p>
+Attribute ID
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The class ID of an object can be extracted from the
+<a href="http://www.dlms.com/documentation/listofstandardobiscodesandmaintenanceproces/index.html">list
+mentioned earlier</a>, while the exact attribute ID depends on the class
+ID and can be extracted the best way by consulting the document IEC
+62056-62 or the Blue Book from the DLMS UA. As a rule of thumb, the
+first attribute of an object is its logical name, while the second
+attribute is the actual data. Further attributes usually include
+metadata like unit and scaling factor.</p></div>
+<div class="paragraph"><p>As an example that is used through the rest of this document, to
+access the current time on a smart meter you have to use the following
+parameters:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Class ID: 8 (Clock class)
+</p>
+</li>
+<li>
+<p>
+Logical Name: [0, 0, 1, 0, 0, 255] (Current time)
+</p>
+</li>
+<li>
+<p>
+Attribute ID: 2 (Data)
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_jdlms">3. Using jDLMS</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The library includes a console application that can be used to connect
+to and read a given meter. This application can also be used as an
+example on how to use the the library. You can find the source code of
+application in src/main/java/org/openmuc/jdlms/app/ .</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_authors">4. Authors</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Developers:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Stefan Feuerhahn
+</p>
+</li>
+<li>
+<p>
+Dirk Zimmermann
+</p>
+</li>
+<li>
+<p>
+Albrecht Schall
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Former developers:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Karsten Müller-Bier
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2015-11-09 16:52:08 CET
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<WriteRequest Qty="0001" >
+  <ListOfVariableAccessSpecification Qty="0001">
+    <VariableName Value="C800" />
+  </ListOfVariableAccessSpecification>
+  <ListOfData Qty="0001">
+    <Array Qty = "0010">
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+      <OctetString Value = "11223344556677889900AABBCCDDEEFF" />
+    </Array>
+  </ListOfData>
+</WriteRequest>

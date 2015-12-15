@@ -1,0 +1,6 @@
+include 'axdr-compiler', 'jdlms-api', 'jdlms-client', 'jdlms-sample'
+
+project(":axdr-compiler").projectDir = file("src/axdr-compiler")
+project(":jdlms-api").projectDir = file("src/api")
+project(":jdlms-client").projectDir = file("src/client")
+project(":jdlms-sample").projectDir = file("src/sample")

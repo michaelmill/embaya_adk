@@ -1,0 +1,17 @@
+org.openmuc.asn1.cosem
+org.openmuc.asn1.iso.acse
+org.openmuc.jasn1.axdr
+org.openmuc.jasn1.axdr.types
+org.openmuc.jasn1.ber
+org.openmuc.jasn1.ber.types
+org.openmuc.jasn1.ber.types.string
+org.openmuc.jdlms.client.communication
+org.openmuc.jdlms.client.cosem.context
+org.openmuc.jdlms.client.hdlc.common
+org.openmuc.jdlms.client.hdlc.impl
+org.openmuc.jdlms.client.hdlc.physical
+org.openmuc.jdlms.client.hdlc.states
+org.openmuc.jdlms.client.impl
+org.openmuc.jdlms.client.ip.common
+org.openmuc.jdlms.client.ip.impl
+org.openmuc.jdlms.util

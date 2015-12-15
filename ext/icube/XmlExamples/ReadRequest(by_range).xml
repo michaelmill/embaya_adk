@@ -1,0 +1,20 @@
+<ReadRequest Qty="0001" >
+  <ParameterisedAccess>
+    <VariableName Value="60E8" />
+    <Selector Value="01" />
+    <Parameter>
+      <Structure Qty="0004" >
+        <Structure Qty="0004" >
+          <LongUnsigned Value="0008" />
+          <OctetString Value="0000010000FF" />
+          <Integer Value="02" />
+          <LongUnsigned Value="0000" />
+        </Structure>
+        <OctetString Value="07D90407FF092306FF8000FF" />
+        <OctetString Value="07DA0116FF0A3619FF8000FF" />
+        <Array Qty="0000" >
+        </Array>
+      </Structure>
+    </Parameter>
+  </ParameterisedAccess>
+</ReadRequest>

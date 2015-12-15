@@ -1,0 +1,20 @@
+<AssociationRequest>
+  <ApplicationContextName Value="LN" />
+  <InitiateRequest>
+    <ProposedDlmsVersionNumber Value="06" />
+    <ProposedConformance>
+      <ConformanceBit Name="Action" />
+      <ConformanceBit Name="EventNotification" />
+      <ConformanceBit Name="SelectiveAccess" />
+      <ConformanceBit Name="Set" />
+      <ConformanceBit Name="Get" />
+      <ConformanceBit Name="BlockTransferWithAction" />
+      <ConformanceBit Name="BlockTransferWithSet" />
+      <ConformanceBit Name="BlockTransferWithGet" />
+      <ConformanceBit Name="Attribute0SupportedWithGet" />
+      <ConformanceBit Name="PriorityMgmtSupported" />
+      <ConformanceBit Name="Attribute0SupportedWithSet" />
+    </ProposedConformance>
+    <ProposedMaxPduSize Value="FFFF" />
+  </InitiateRequest>
+</AssociationRequest>

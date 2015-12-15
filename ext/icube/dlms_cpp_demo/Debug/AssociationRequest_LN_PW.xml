@@ -1,0 +1,18 @@
+<AssociationRequest>
+  <ApplicationContextName Value="LN" />
+  <SenderACSERequirements Value="1" />
+  <MechanismName Value="LOW_SECURITY" />
+  <CallingAuthenticationValue Value="4142434445464748" />
+  <InitiateRequest>
+    <ProposedDlmsVersionNumber Value="06" />
+    <ProposedConformance>
+      <ConformanceBit Name="Action" />
+      <ConformanceBit Name="SelectiveAccess" />
+      <ConformanceBit Name="Set" />
+      <ConformanceBit Name="Get" />
+      <ConformanceBit Name="BlockTransferWithSet" />
+      <ConformanceBit Name="BlockTransferWithGet" />
+    </ProposedConformance>
+    <ProposedMaxPduSize Value="FFFF" />
+  </InitiateRequest>
+</AssociationRequest>

@@ -1,0 +1,13 @@
+<AssociationRequest>
+  <ApplicationContextName Value="SN" />
+  <InitiateRequest>
+    <ProposedDlmsVersionNumber Value="06" />
+    <ProposedConformance>
+      <ConformanceBit Name="ParametrizedAccess" />
+      <ConformanceBit Name="MultipleReferences" />
+      <ConformanceBit Name="Write" />
+      <ConformanceBit Name="Read" />
+    </ProposedConformance>
+    <ProposedMaxPduSize Value="FFFF" />
+  </InitiateRequest>
+</AssociationRequest>

@@ -1,0 +1,840 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.7" />
+<title>jDLMS User Guide</title>
+<style type="text/css">
+/*
+ * AsciiDoc 'volnitsky' theme for xhtml11 and html5 backends.
+ * Based on css from http://volnitsky.com, which was in turn based on default
+ * theme from AsciiDoc
+ *
+ * FIXME: The styling is still a bit rough in places.
+ *
+ */
+
+/* Default font. */
+body {
+  font-family: Georgia,"Times New Roman",Times,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Candara,Arial,sans-serif;
+}
+
+
+#toc a {
+    border-bottom: 1px dotted #999999;
+    color: #04392C !important;
+    text-decoration: none !important;
+}
+#toc a:hover {
+    border-bottom: 1px solid #049674;
+    color: #049674 !important;
+    text-decoration: none !important;
+}
+a { color: #0D6C55; text-decoration: none; border-bottom: 1px dotted #0D6C55; }
+a:visited { color: #0D6C55; border-bottom: 1px dotted #0D6C55; }
+a:hover { color: #0D6C55; border-bottom: 1px solid #0D6C55; }
+
+em {
+  font-style: italic;
+  color: #0D6C55;
+}
+
+strong {
+  font-weight: bold;
+/*  color: #0D6C55;*/
+ color: #000000;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #049674;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+  letter-spacing:+0.15em;
+}
+
+h1, h2, h3 { border-bottom: 2px solid #CCEAE4; }
+h2 { padding-top: 0.5em; }
+h3 { float: left; }
+h3 + * { clear: left; }
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid #0D6C55;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #0D6C55;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+div.tableblock, div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+div.admonitionblock {
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #0D6C55;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid silver;
+  padding: 0.5em;
+}
+
+div.listingblock > div.content {
+  border: 1px solid silver;
+  background: #f4f4f4;
+  padding: 0.5em;
+}
+
+div.quoteblock {
+  padding-left: 2.0em;
+  margin-right: 10%;
+}
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock {
+  padding-left: 2.0em;
+  margin-right: 10%;
+}
+div.verseblock > pre.content {
+  font-family: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #0D6C55;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 2px solid silver;
+}
+
+div.exampleblock > div.content {
+  border-left: 2px solid silver;
+  padding: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: #0D6C55;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+div.tableblock > table {
+  border: 3px solid #0D6C55;
+}
+thead {
+  font-weight: bold;
+  color: #0D6C55;
+}
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: #0D6C55;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toctitle {
+  color: #049674;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 { margin-top: 0; margin-bottom: 0; }
+div.toclevel1 { margin-top: 0.3em; margin-left: 0; font-size: 1.0em; }
+div.toclevel2 { margin-top: 0.25em; margin-left: 2em; font-size: 0.9em; }
+div.toclevel3 { margin-left: 4em; font-size: 0.8em; }
+div.toclevel4 { margin-left: 6em; font-size: 0.8em; }
+
+body {
+  margin: 1em 5%;
+  max-width:  55em;
+  padding-left: 0;
+
+}
+
+.monospaced, tt, div.listingblock > div.content {
+  font-family:  Consolas, "Andale Mono", "Courier New", monospace;
+  color: #004400;
+  background: #f4f4f4;
+  max-width: 80em;
+  line-height: 1.2em;
+}
+
+.paragraph p  {
+  line-height: 1.5em;
+  margin-top: 1em;
+}
+
+.paragraph p, li, dd, .content { max-width: 45em; }
+.admonitionblock               { max-width: 35em; }
+
+div.sectionbody div.ulist > ul > li {
+  list-style-type: square;
+  color: #aaa;
+}
+  div.sectionbody div.ulist >  ul > li > * {
+    color: black;
+    /*font-size: 50%;*/
+  }
+
+
+div.sectionbody div.ulist > ul > li div.ulist > ul > li {
+  color: #ccd ;
+}
+  div.sectionbody div.ulist > ul > li div.ulist > ul > li > * {
+    color: black ;
+  }
+
+em {
+  font-style: normal ! important;
+  font-weight: bold ! important;
+  color: #662222   ! important;
+  letter-spacing:+0.08em ! important;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #049674;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #0D6C55;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #0D6C55;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+@media screen {
+  body {
+    max-width: 50em; /* approximately 80 characters wide */
+    margin-left: 16em;
+  }
+
+  #toc {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 13em;
+    padding: 0.5em;
+    padding-bottom: 1.5em;
+    margin: 0;
+    overflow: auto;
+    border-right: 3px solid #f8f8f8;
+    background-color: white;
+  }
+
+  #toc .toclevel1 {
+    margin-top: 0.5em;
+  }
+
+  #toc .toclevel2 {
+    margin-top: 0.25em;
+    display: list-item;
+    color: #aaaaaa;
+  }
+
+  #toctitle {
+    margin-top: 0.5em;
+  }
+}
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article" style="max-width:55em">
+<div id="header">
+<h1>jDLMS User Guide</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_general">1. General</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>The jDLMS project is an open source Java library to communicate with smart meters using the protocol DLMS/COSEM, standardized as IEC 62056. DLMS/COSEM is an object based protocol specifically designed to communicate in a generic way with smart meters over multiple communication protocols. Currently, DLMS/COSEM supports communication over HDLC using a serial connection or over TCP/IP and UDP/IP.</p></div>
+<div class="paragraph"><p>This guide is no replacements for the IEC 62056 documents or the colored books administered by the DLMS User Association (DLMS UA). It merely scratches on the surface of this protocol, enough to get an idea how this library functions.</p></div>
+<div class="sect2">
+<h3 id="_logical_devices">1.1. Logical Devices</h3>
+<div class="paragraph"><p>In DLMS/COSEM, a physical Smart Meter device can host several so called Logical Devices. These logical devices are addressed by a separate up to 2 Byte long number. As an example, a multi-energy meter can consist of one logical device for electricity metering on address 18 and another one for gas metering on address 67. No matter what type of smart meter it is, a DLMS/COSEM device must contain a special logical device called the <strong>management logical device</strong> at address 1. The content of this device may vary, but it must <strong>at least</strong> have a list of all logical devices inside the physical smart meter. You are always connecting to a single logical device with DLMS/COSEM.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_client_address">1.2. Client Address</h3>
+<div class="paragraph"><p>Both server and client need an address to be uniquely identified. In case of the server, the address to identify a device consists of the physical address of the device (e.g. an IP address + port), as well as the address of the logical device (e.g. 1 for the management logical device).</p></div>
+<div class="paragraph"><p>On the other hand, the address of the client is highly dependant from the used communication protocol but always consists at least of one Byte to identify the nature client. In most cases, this Byte determines what objects you can read or write and what form of authentication is necessary to connect to the device. A special identifier is the number 16, which refers to the public client. This client address has the lowest rights and doesn&#8217;t need any authentication in most cases.</p></div>
+<div class="paragraph"><p>If HDLC is used as communication layer, the client address only consists of this single byte. Using TCP or UDP, the address additionaly consists of the IP and port of the client application.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_object_addresses">1.3. Object addresses</h3>
+<div class="paragraph"><p>As previously mentioned, DLMS/COSEM is an object based protocol. That means that the data of a device is grouped to objects. These objects are always an instance of a clearly defined <strong>interface class</strong>, similar to classes in object oriented programming languages. All available classes as well as their exact structure can be found in IEC 62056-62.</p></div>
+<div class="paragraph"><p>Objects can be addressed in two ways, depending on the connected smart meter. The recommended way is using the <strong>logical name</strong> of an object. A logical name, also known as OBIS code, is a 6 Byte long number that uniquely addresses a certain object over all smart meters. For example, the clock of a smart meter is always reachable under the address [0, 0, 1, 0, 0, 255]. The DLMS UA regulates what objects are under what addresses. A list of all possible logical names is published by the DLMS UA under <a href="http://www.dlms.com/documentation/listofstandardobiscodesandmaintenanceproces/index.html">the following site</a> as an Excel sheet.</p></div>
+<div class="paragraph"><p>The other way to address an object is the so called <strong>short address</strong>. Short addresses is used for small devices and should only be used if the connected smart meter cannot communicate using logical names. The short address is a simple 2 Byte long number, instead of the 6 Byte long OBIS code mentioned above. The address space of short addresses is not regulated like the logical names, meaning that the same address can lead to different objects on different devices.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_accessing_data">1.4. Accessing data</h3>
+<div class="paragraph"><p>After the connection to a logical device has been established, communication occurs using the request-response model, meaning that the client requests a specific action and - after the request has been processed - the device sends the appropriate response back to the client.</p></div>
+<div class="paragraph"><p>Even though the data of the remote device are addressed in an object based fashion, data is accessed attribute based. So, in order to send a request, you have to send 3 parameters for uniquely identify the data and access it:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Class ID
+</p>
+</li>
+<li>
+<p>
+Address of the object
+</p>
+</li>
+<li>
+<p>
+Attribute ID
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The class ID of an object can be extracted from the <a href="http://www.dlms.com/documentation/listofstandardobiscodesandmaintenanceproces/index.html">list mentioned earlier</a>, while the exact attribute ID depends on the class ID and can be extracted the best way by consulting the document IEC 62056-62 or the Blue Book from the DLMS UA. As a rule of thumb, the first attribute of an object is its logical name, while the second attribute is the actual data. Further attributes usually include metadata like unit and scaling factor.</p></div>
+<div class="paragraph"><p>As an example that is used through the rest of this document, to access the current time on a smart meter you have to use the following parameters:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Class ID: 8 (Clock class)
+</p>
+</li>
+<li>
+<p>
+Logical Name: [0, 0, 1, 0, 0, 255] (Current time)
+</p>
+</li>
+<li>
+<p>
+Attribute ID: 2 (Data)
+</p>
+</li>
+</ul></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_jdlms">2. Using jDLMS</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>In the following chapter, we are writing a Java application to read the current time of a remote smart meter step by step.</p></div>
+<div class="sect2">
+<h3 id="_entry_point">2.1. Entry point</h3>
+<div class="paragraph"><p>The entry point of the jDLMS library is the interface <strong><tt>IClientConnectionFactory</tt></strong>. An object of this type creates objects of the type <strong><tt>IClientConnection</tt></strong>. These <strong><tt>IClientConnection</tt></strong> objects are your sole communication point to the device, all access is handled using methods of this object.</p></div>
+<div class="paragraph"><p>To create an object of <tt>IClientConnectionFactory</tt>, the easiest way is the static method <tt>createFactory()</tt> of the <tt>ClientConnectionSettings</tt> class.</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>In order for <tt>factory</tt> to know what type of connection it has to create, you must give it an instance of one of <strong><tt>ClientConnectionSettings</tt></strong> subclasses. An instance of <strong><tt>ClientConnectionSettings</tt></strong> contains all data needed to create a connection object. For this example, we assume that we are connecting to a smart meter with the IP address <tt>192.168.200.25</tt> and the port <tt>4059</tt> (the default port for DLMS/COSEM) using TCP. We will connect as public client (<tt>16</tt>) to the management logical device (<tt>1</tt>) and will use logical name (<tt>LN</tt>) referencing to access the data.</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>After <tt>settings</tt> has been created, <tt>factory</tt> can create an object of <strong><tt>IClientConnection</tt></strong> pointing to the remote device</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>From this point on, only <tt>connection</tt> is needed to communicate with the smart meter.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_controlling_connection">2.2. Controlling connection</h3>
+<div class="paragraph"><p>So far, the <tt>connection</tt> object is created, but the connection itself is not established yet. A connection is generally established with one method call, but the number of parameter differ depending on the authentication the client needs. For our example, the public client needs no authentication (known in DLMS as <strong>lowest authentication</strong>). In this case, the only parameter we need to set is the amount of milliseconds we wait until the connecting attempt is aborted. We can safely assume that the connection cannot be established if it takes longer than 3 seconds, so our code to connect to the device looks like the following:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>It&#8217;s as simple as that. Closing a connection is equally easy:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>On closing a connection, some smart meter devices are picky about what layer sends the disconnect message. Some devices expect the disconnect message on the DLMS layer, other expect a disconnect on the IP respectively HDLC layer. If nothing is said, jDLMS sends a disconnect message on the DLMS layer. That behavior can be altered by replacing the above line with <tt>disconnect(false)</tt>. That way, the underlying communication layer sends the disconnect message.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_accessing_data_2">2.3. Accessing data</h3>
+<div class="paragraph"><p>To send a get request for reading the current time, we first have to create an address tuple that points to that attribute. For get requests, that tuple is an instance of the <strong><tt>GetParameter</tt></strong> class:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>The constructor of the <strong><tt>GetParameter</tt></strong> class gets the class id and attribute id as integer and the logical name as an instance of the <strong><tt>ObisCode</tt></strong> class. The <strong><tt>ObisCode</tt></strong> class simply takes six bytes as input and preparates them to the right format for the library.</p></div>
+<div class="paragraph"><p>After <tt>getClock</tt> is created, all there is to do is tell the library to read that data from the smart meter:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>The <tt>getClockResult</tt> variable holds the data that the smart meter sent as response. It either holds the requested data, or an error code if something went wrong. A common way to handle the response would be the following snippet:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>For setting a value or calling a method on the remote object, please refer to the javadoc of this library. Their behavior is similar to getting a value.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_whole_example_code">2.4. Whole example code</h3>
+<div class="paragraph"><p>Below is the whole code that has been written in this example:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_additional_features">3. Additional features</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_connecting_to_different_devices">3.1. Connecting to different devices</h3>
+<div class="paragraph"><p>If you want to test the above example with another device, all you have to do is create another <strong><tt>ClientConnectionSettings</tt></strong> object with the right parameters. For example, to read from a smart meter over HDLC, you would change the first two lines of code in the above main function with these:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>With the exemption of the disconnect function, you can leave the code as it is and it will connect to the new device over the serial line using HDLC. To do this, we create a <strong><tt>HdlcAddress</tt></strong> object in the first line. That address is 2 Bytes long and points to the logical device 1 at the physical device with the address 17. After that, we create an <strong><tt>HdlcClientConnectionSettings</tt></strong> instance that shall use /dev/ttyUSB0 to send and receive data, refer to itself as public client (one Byte HdlcAddress. Value: 16), connect to the address created earlier and use logical name addressing.</p></div>
+<div class="paragraph"><p>As you can see, after the <strong><tt>IClientConnection</tt></strong> object is created, there is no difference for the user of the library. Even if you have to change the object addressing method to short name (<tt><strong>ReferencingMethod</strong>.SN</tt>), you still give the logical name of the object to the jDLMS and the library will handle the mapping internally.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_authentication">3.2. Authentication</h3>
+<div class="paragraph"><p>Nearly not every problem can be solved using the public client, and sooner or later one needs added permissions to access data. If you want to write data to the smart meter you have to authorize as a client with more rights at the last. In order to do this, you have to modify the <tt>settings</tt> object before the <strong><tt>IClientConnection</tt></strong> object is created.</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>On low authentication mode, you have to send a secret byte array as additional parameter when calling <tt>connection.connect()</tt>. For example, if the password would be "secret", encoded in US-ASCII, you would replace the connect line in above example with this line:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>connection.connect(3000, "secret".getBytes("US-ASCII"))</tt></pre>
+</div></div>
+<div class="paragraph"><p>If the password is wrong, an <strong><tt>IOException</tt></strong> is thrown and no connection is established.</p></div>
+<div class="paragraph"><p>Support for HIGH Authentication according to IEC 62056-62 has been implemented but is not tested up to this point, as we have no access to a smart meter supporting this authentication.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_reading_multiple_samples">3.3. Reading multiple samples</h3>
+<div class="paragraph"><p>You can read multiple values with one request by chaining multiple <strong><tt>GetParameter</tt></strong> object into one <tt>connection.get()</tt> call. Additionaly, you can copy <strong><tt>GetParameter</tt></strong> objects with new attribute ids or logical names using <tt>changeAttributeId()</tt> and <tt>changeObisCode()</tt>. Note that <tt><strong>GetParameter</strong></tt>, like most other classes used to communicate with the library, is immutable. The object that is used to call <tt>changeAttribute()</tt> will still refer to the same data as before the call.</p></div>
+<div class="paragraph"><p>To read the time zone and clock base additionally to the current time, you could add the following code:</p></div>
+<div class="listingblock">
+<div class="content"></div></div>
+<div class="paragraph"><p>The jDLMS library will return a list of <strong><tt>GetResults</tt></strong>, the order of results is the same as the order of parameters inside the <tt>get(&#8230;)</tt> call. Beware that each operation can fail on its own, you have to check every <strong><tt>GetResult</tt></strong> item if the operation was successful. An Exception is only thrown if there was a problem with the communication itself.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2013-07-26 09:05:45 CEST
+</div>
+</div>
+</body>
+</html>

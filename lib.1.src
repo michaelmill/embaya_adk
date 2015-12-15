@@ -1,0 +1,151 @@
+/* -----------------------------------------------------------------;
+ * $source   : / $
+ * $revision : 1.0 $
+ * $author   : wyr@null.co.za $
+ * $date     : 2015/12/02 10:43:00 SAST $
+ * $desc     : $
+ * $log      : $
+ *
+ * -----------------------------------------------------------------;
+ */
+
+#include "lib.h"
+
+//---------------------------------------------------------------------------;
+//
+//---------------------------------------------------------------------------;
+
+int c_dlms_initialize (int l_register_protocol_type) {
+
+   printf ("%i\n", l_register_protocol_type);
+
+   return 1;
+}
+
+//---------------------------------------------------------------------------;
+//
+//---------------------------------------------------------------------------;
+
+/**
+int c_dlms_connect (int l_register_protocol_type) {
+
+   int                socket_desc;
+   struct sockaddr_in server;
+   struct hostent     *hptr;
+
+   char               *message = (char*)malloc(sizeof(char*));
+   char               *rhost   = (char*)malloc(sizeof(char*));
+
+   int                port     = 4059;
+
+ //sprintf (rhost, "%s", "10.0.0.61");
+   sprintf (rhost, "%s", "localhost");
+   sprintf (message, "%s", "GET / HTTP/1.1\r\n\r\n");
+
+   if((hptr = gethostbyname(rhost)) == NULL) {
+        printf("system DNS name resolution not configured properly");
+   }
+
+   memcpy((char *)&server.sin_addr, hptr->h_addr, hptr->h_length);
+     
+   // create socket
+
+   socket_desc = socket(AF_INET, SOCK_STREAM , 0);
+
+   if (socket_desc == -1) {
+      printf("could not create socket");
+   }
+         
+ //server.sin_addr.s_addr = inet_addr("192.168.1.146");
+   server.sin_family      = AF_INET;
+   server.sin_port        = htons( port );
+ 
+   // connect to remote server
+
+   if (connect(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0) {
+      puts("connect error");
+      return 1;
+   }
+     
+   puts("connected\n");
+     
+   // send some data
+
+   if(send(socket_desc, message, strlen(message), 0) < 0) {
+      puts("send failed");
+      return 1;
+   }
+   puts("data sent\n");
+
+   return 0;
+}
+**/
+//---------------------------------------------------------------------------;
+//
+//---------------------------------------------------------------------------;
+
+int c_dlms_adk_hook () {
+
+ //printf ("%i\n", 1);
+
+   return 1;
+}
+
+//---------------------------------------------------------------------------;
+//
+//---------------------------------------------------------------------------;
+/**
+int connect (int l_register_protocol_type) {
+
+   printf ("%i\n", l_register_protocol_type);
+
+   return 1;
+}
+**/
+//---------------------------------------------------------------------------;
+//
+//---------------------------------------------------------------------------;
+
+int c_dlms_adk_register_protocol (int l_register_protocol_type) {
+
+   int c = l_register_protocol_type;
+
+   switch (c) {
+      case 0 :
+         c_dlms_initialize (c);
+         break;
+      case 1 :
+         c_dlms_initialize (c);
+         break;
+      case 2 :
+         c_dlms_initialize (c);
+         break;
+      case 3 :
+         c_dlms_initialize (c);
+         break;
+      case 4 :
+         c_dlms_initialize (c);
+         break;
+   }
+
+   return 1;
+}
+
+//---------------------------------------------------------------------------;
+//
+//---------------------------------------------------------------------------;
+/**
+int main (int    argc, 
+          char **argv, 
+          char **envp) {
+
+   struct c_dlms_adk_interface c_inf;
+
+   c_inf.j = 0;
+
+   c_dlms_adk_hook ();
+   c_dlms_adk_register_protocol (2);
+
+   return 1;
+}
+**/

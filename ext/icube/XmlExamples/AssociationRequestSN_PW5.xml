@@ -1,0 +1,16 @@
+<AssociationRequest>
+  <ApplicationContextName Value="SN" />
+  <SenderACSERequirements Value="1" />
+  <MechanismName Value="LOW_SECURITY" />
+  <CallingAuthenticationValue Value="3535353535353535" />
+  <InitiateRequest>
+    <ProposedDlmsVersionNumber Value="06" />
+    <ProposedConformance>
+      <ConformanceBit Name="ParametrizedAccess" />
+      <ConformanceBit Name="MultipleReferences" />
+      <ConformanceBit Name="Write" />
+      <ConformanceBit Name="Read" />
+    </ProposedConformance>
+    <ProposedMaxPduSize Value="FFFF" />
+  </InitiateRequest>
+</AssociationRequest>

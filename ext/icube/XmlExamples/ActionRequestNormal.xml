@@ -1,0 +1,13 @@
+<ActionRequest>
+  <ActionRequestNormal>
+    <InvokeIdAndPriority Value="C1" />
+    <MethodDescriptor>
+      <ClassId Value="1122" />
+      <InstanceId Value="112233445566" />
+      <MethodId Value="03" />
+    </MethodDescriptor>
+    <MethodInvocationParameters>
+      <Integer Value="22" />
+    </MethodInvocationParameters>
+  </ActionRequestNormal>
+</ActionRequest>

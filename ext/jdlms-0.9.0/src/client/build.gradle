@@ -1,0 +1,32 @@
+
+dependencies {
+  compile project(':jdlms-api')
+  compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.2'
+  compile files('../../dependencies/rxtxcomm_api-2.2pre2_bundle.jar')
+}
+
+jar {
+  from('src/main/java/META-INF/services/') {
+    include '*'
+    into('META-INF/services')
+  }
+}
+
+sourceSets.test.runtimeClasspath += files("unittests")
+
+task extractJar (type: Copy) {
+	def zipFile = file("../api/build/libs/jdlms-api-" + project.version + ".jar")
+	def outputDir = file("${buildDir}/tmp/extract")
+    
+	//extract classes
+    from zipTree(zipFile)
+    into outputDir
+}
+
+task copyClasses (type: Copy) {
+  from file("${buildDir}/tmp/extract/")
+  into file("${buildDir}/classes/main")
+}
+
+copyClasses.dependsOn extractJar
+jar.dependsOn copyClasses

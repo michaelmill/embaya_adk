@@ -1,0 +1,14 @@
+<ReadRequest Qty="0001" >
+  <ParameterisedAccess>
+    <VariableName Value="60E8" />
+    <Selector Value="02" />
+    <Parameter>
+      <Structure Qty="0004" >
+        <DoubleLongUnsigned Value="00000001" />
+        <DoubleLongUnsigned Value="00000001" />
+        <LongUnsigned Value="0001" />
+        <LongUnsigned Value="0001" />
+      </Structure>
+    </Parameter>
+  </ParameterisedAccess>
+</ReadRequest>

@@ -1,0 +1,304 @@
+jDLMS User Guide
+================
+
+:numbered:
+
+General
+-------
+
+The jDLMS project is an open source Java library to communicate with smart meters using the protocol DLMS/COSEM, standardized as IEC 62056. DLMS/COSEM is an object based protocol specifically designed to communicate in a generic way with smart meters over multiple communication protocols. Currently, DLMS/COSEM supports communication over HDLC using a serial connection or over TCP/IP and UDP/IP.
+
+This guide is no replacements for the IEC 62056 documents or the colored books administered by the DLMS User Association (DLMS UA). It merely scratches on the surface of this protocol, enough to get an idea how this library functions.
+
+Logical Devices
+~~~~~~~~~~~~~~~
+
+In DLMS/COSEM, a physical Smart Meter device can host several so called Logical Devices. These logical devices are addressed by a separate up to 2 Byte long number. As an example, a multi-energy meter can consist of one logical device for electricity metering on address 18 and another one for gas metering on address 67. No matter what type of smart meter it is, a DLMS/COSEM device must contain a special logical device called the *management logical device* at address 1. The content of this device may vary, but it must *at least* have a list of all logical devices inside the physical smart meter. You are always connecting to a single logical device with DLMS/COSEM.
+
+Client Address
+~~~~~~~~~~~~~~
+
+Both server and client need an address to be uniquely identified. In case of the server, the address to identify a device consists of the physical address of the device (e.g. an IP address + port), as well as the address of the logical device (e.g. 1 for the management logical device).
+
+On the other hand, the address of the client is highly dependant from the used communication protocol but always consists at least of one Byte to identify the nature client. In most cases, this Byte determines what objects you can read or write and what form of authentication is necessary to connect to the device. A special identifier is the number 16, which refers to the public client. This client address has the lowest rights and doesn't need any authentication in most cases.
+
+If HDLC is used as communication layer, the client address only consists of this single byte. Using TCP or UDP, the address additionaly consists of the IP and port of the client application.
+
+Object addresses
+~~~~~~~~~~~~~~~~
+
+As previously mentioned, DLMS/COSEM is an object based protocol. That means that the data of a device is grouped to objects. These objects are always an instance of a clearly defined *interface class*, similar to classes in object oriented programming languages. All available classes as well as their exact structure can be found in IEC 62056-62.
+
+Objects can be addressed in two ways, depending on the connected smart meter. The recommended way is using the *logical name* of an object. A logical name, also known as OBIS code, is a 6 Byte long number that uniquely addresses a certain object over all smart meters. For example, the clock of a smart meter is always reachable under the address [0, 0, 1, 0, 0, 255]. The DLMS UA regulates what objects are under what addresses. A list of all possible logical names is published by the DLMS UA under link:http://www.dlms.com/documentation/listofstandardobiscodesandmaintenanceproces/index.html[the following site] as an Excel sheet.
+
+The other way to address an object is the so called *short address*. Short addresses is used for small devices and should only be used if the connected smart meter cannot communicate using logical names. The short address is a simple 2 Byte long number, instead of the 6 Byte long OBIS code mentioned above. The address space of short addresses is not regulated like the logical names, meaning that the same address can lead to different objects on different devices.
+
+Accessing data
+~~~~~~~~~~~~~~
+
+After the connection to a logical device has been established, communication occurs using the request-response model, meaning that the client requests a specific action and - after the request has been processed - the device sends the appropriate response back to the client.
+
+Even though the data of the remote device are addressed in an object based fashion, data is accessed attribute based. So, in order to send a request, you have to send 3 parameters for uniquely identify the data and access it:
+
+- Class ID
+- Address of the object 
+- Attribute ID
+
+The class ID of an object can be extracted from the link:http://www.dlms.com/documentation/listofstandardobiscodesandmaintenanceproces/index.html[list mentioned earlier], while the exact attribute ID depends on the class ID and can be extracted the best way by consulting the document IEC 62056-62 or the Blue Book from the DLMS UA. As a rule of thumb, the first attribute of an object is its logical name, while the second attribute is the actual data. Further attributes usually include metadata like unit and scaling factor.
+
+As an example that is used through the rest of this document, to access the current time on a smart meter you have to use the following parameters:
+
+- Class ID: 8 (Clock class)
+- Logical Name: [0, 0, 1, 0, 0, 255] (Current time)
+- Attribute ID: 2 (Data)
+
+Using jDLMS
+-----------
+
+In the following chapter, we are writing a Java application to read the current time of a remote smart meter step by step.
+
+Entry point
+~~~~~~~~~~~
+
+The entry point of the jDLMS library is the interface *+IClientConnectionFactory+*. An object of this type creates objects of the type *+IClientConnection+*. These *+IClientConnection+* objects are your sole communication point to the device, all access is handled using methods of this object.
+
+To create an object of +IClientConnectionFactory+, the easiest way is the static method +createFactory()+ of the +ClientConnectionSettings+ class.
+
+[source,Java]
+----
+IClientConnectionFactory factory = ClientConnectionSettings.getFactory();
+----
+
+In order for +factory+ to know what type of connection it has to create, you must give it an instance of one of *+ClientConnectionSettings+* subclasses. An instance of *+ClientConnectionSettings+* contains all data needed to create a connection object. For this example, we assume that we are connecting to a smart meter with the IP address +192.168.200.25+ and the port +4059+ (the default port for DLMS/COSEM) using TCP. We will connect as public client (+16+) to the management logical device (+1+) and will use logical name (+LN+) referencing to access the data.
+
+[source,Java]
+----
+// Settings to connect to smart meter
+// - IP Destination: 192.168.200.25 (may vary)
+// - TCP Port: 4059 (DLMS standard)
+// - Address of logical device: 1 (Management Logical Device)
+// - Address of client: 16 (Public client)
+// - Referencing: Logical Name
+InetSocketAddress smartMeter = Inet4Address.getByName("192.168.200.25"), 4059);
+TcpClientConnectionSettings settings = new TcpClientConnectionSettings(smartMeter, 1, 16, 
+	ReferencingMethod.LN);
+----
+
+After +settings+ has been created, +factory+ can create an object of *+IClientConnection+* pointing to the remote device
+
+[source,Java]
+----
+IClientConnection connection = factory.createClientConnection(settings);
+----
+
+From this point on, only +connection+ is needed to communicate with the smart meter.
+
+Controlling connection
+~~~~~~~~~~~~~~~~~~~~~~
+
+So far, the +connection+ object is created, but the connection itself is not established yet. A connection is generally established with one method call, but the number of parameter differ depending on the authentication the client needs. For our example, the public client needs no authentication (known in DLMS as *lowest authentication*). In this case, the only parameter we need to set is the amount of milliseconds we wait until the connecting attempt is aborted. We can safely assume that the connection cannot be established if it takes longer than 3 seconds, so our code to connect to the device looks like the following:
+
+[source,Java]
+----
+// Waiting 3s until connect attempt is canceled
+connection.connect(3000);
+----
+
+It's as simple as that. Closing a connection is equally easy:
+
+[source,Java]
+----
+connection.disconnect();
+----
+
+On closing a connection, some smart meter devices are picky about what layer sends the disconnect message. Some devices expect the disconnect message on the DLMS layer, other expect a disconnect on the IP respectively HDLC layer. If nothing is said, jDLMS sends a disconnect message on the DLMS layer. That behavior can be altered by replacing the above line with +disconnect(false)+. That way, the underlying communication layer sends the disconnect message.
+
+Accessing data
+~~~~~~~~~~~~~~
+
+To send a get request for reading the current time, we first have to create an address tuple that points to that attribute. For get requests, that tuple is an instance of the *+GetParameter+* class:
+
+[source,Java]
+----
+// Get parameter to read current time
+// - Interface class: 8 (Clock)
+// - Obis code: 0:0:1:0:0:255 (current time)
+// - Attribute ID: 2 (time)
+GetParameter getClock = new GetParameter(8, new ObisCode(0, 0, 1, 0, 0, 255), 2);
+----
+
+The constructor of the *+GetParameter+* class gets the class id and attribute id as integer and the logical name as an instance of the *+ObisCode+* class. The *+ObisCode+* class simply takes six bytes as input and preparates them to the right format for the library.
+
+After +getClock+ is created, all there is to do is tell the library to read that data from the smart meter:
+
+[source,Java]
+----
+// Read the current time from the remote device
+// Waiting 1s until aborting connection
+List<GetResult> results = connection.get(1000, getClock);
+GetResult getClockResult = results.get(0);
+----
+
+The +getClockResult+ variable holds the data that the smart meter sent as response. It either holds the requested data, or an error code if something went wrong. A common way to handle the response would be the following snippet:
+
+[source,Java]
+----
+if (getClockResult.isSuccess()) {
+	// Handle data in getClockResult.getResultData();
+} else {
+	// Handle according to error in getClockResult.getResultCode();
+}
+----
+
+For setting a value or calling a method on the remote object, please refer to the javadoc of this library. Their behavior is similar to getting a value.
+
+Whole example code
+~~~~~~~~~~~~~~~~~~
+
+Below is the whole code that has been written in this example:
+
+[source,Java,numbered]
+------------------------------------------------------------------
+public class DlmsExample {
+	public static void main(String[] args) throws UnknownHostException, InterruptedException {
+		// Settings to connect to smart meter
+		// - IP Destination: 192.168.200.25 (may vary)
+		// - TCP Port: 4059 (DLMS standard)
+		// - WPort of smart meter: 1 (Management Logical Device)
+		// - WPort of client: 16 (Public client)
+		// - Referencing: Logical Name
+		InetSocketAddress smartMeter = Inet4Address.getByName("192.168.200.25"), 4059);
+		TcpClientConnectionSettings settings = new TcpClientConnectionSettings(smartMeter, 
+			1, 16, ReferencingMethod.LN);
+
+		IClientConnectionFactory factory = ClientConnectionSettings.getFactory();
+		IClientConnection connection = null;
+		try {
+			connection = factory.createClientConnection(settings);
+
+			// Waiting 3s until connect attempt is canceled
+			connection.connect(3000);
+			System.out.println("\nConnected to smart meter\n");
+
+			// Get parameter to read current time
+			// - Interface class: 8 (Clock)
+			// - Obis code: 0:0:1:0:0:255 (current time)
+			// - Attribute ID: 2 (time)
+			GetParameter getClock = new GetParameter(8, new ObisCode(0, 0, 1, 0, 0, 
+				255), 2);
+
+			// Read the current time from the remote device
+			// Waiting 1s until aborting connection
+			List<GetResult> getResults = connection.get(1000, getClock);
+			GetResult getClockResult = results.get(0);
+
+			System.out.println("\nRead time from smart meter");
+			if (getClockResult.isSuccessful()) {
+				// According to IEC 62056-62, the current time will be transmitted
+				// as byte array
+				System.out.println("Time: " + getClockString(getClockResult
+					.getResultData().getByteArray()));
+			} else {
+				System.out.println("Error on reading time. ErrorCode: " 
+					+ getClockResult.getResultCode());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (connection != null && connection.isConnected()) {
+				connection.disconnect();
+				System.out.println("\nDisconnected from smart meter\n");
+			}
+		}
+	}
+
+	/**
+	 * Helper method to extract the current date and time out of the byte array
+	 */
+	private static String getClockString(byte[] bytes) {
+		int year = ((bytes[0] << 8) & 0xFF00) + (bytes[1] & 0xFF);
+		int month = bytes[2];
+		int dayOfMonth = bytes[3];
+		String dayOfWeek = "";
+		switch (bytes[4]) {
+			case 1: dayOfWeek = "Monday"; break;
+			case 2:	dayOfWeek = "Tuesday"; break;
+			case 3:	dayOfWeek = "Wednesday"; break;
+			case 4:	dayOfWeek = "Thursday"; break;
+			case 5:	dayOfWeek = "Friday"; break;
+			case 6:	dayOfWeek = "Saturday"; break;
+			case 7:	dayOfWeek = "Sunday"; break;
+		}
+		int hour = bytes[5];
+		int min = bytes[6];
+		int sec = bytes[7];
+		return dayOfWeek + " " + year + "/" + month + "/" + dayOfMonth + " " + hour 
+			+ ":" + min + ":" + sec;
+	}
+}
+------------------------------------------------------------------
+
+Additional features
+-------------------
+
+Connecting to different devices
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to test the above example with another device, all you have to do is create another *+ClientConnectionSettings+* object with the right parameters. For example, to read from a smart meter over HDLC, you would change the first two lines of code in the above main function with these:
+
+[source,Java]
+----
+HdlcAddress serverAddress = new HdlcAddress(1, 17, 2); 
+HdlcClientConnectionSettings settings = new HdlcClientConnectionSettings("/dev/ttyUSB0", 
+	new HdlcAddress(16), serverAddress, ReferencingMethod.LN);
+----
+
+With the exemption of the disconnect function, you can leave the code as it is and it will connect to the new device over the serial line using HDLC. To do this, we create a *+HdlcAddress+* object in the first line. That address is 2 Bytes long and points to the logical device 1 at the physical device with the address 17. After that, we create an *+HdlcClientConnectionSettings+* instance that shall use /dev/ttyUSB0 to send and receive data, refer to itself as public client (one Byte HdlcAddress. Value: 16), connect to the address created earlier and use logical name addressing.
+
+As you can see, after the *+IClientConnection+* object is created, there is no difference for the user of the library. Even if you have to change the object addressing method to short name (+*ReferencingMethod*.SN+), you still give the logical name of the object to the jDLMS and the library will handle the mapping internally.
+
+Authentication
+~~~~~~~~~~~~~~
+
+Nearly not every problem can be solved using the public client, and sooner or later one needs added permissions to access data. If you want to write data to the smart meter you have to authorize as a client with more rights at the last. In order to do this, you have to modify the +settings+ object before the *+IClientConnection+* object is created.
+
+[source,Java]
+----
+// Right after the settings object has been created
+settings.setAuthentication(Authentication.LOW);
+----
+
+On low authentication mode, you have to send a secret byte array as additional parameter when calling +connection.connect()+. For example, if the password would be "secret", encoded in US-ASCII, you would replace the connect line in above example with this line:
+
+----
+connection.connect(3000, "secret".getBytes("US-ASCII"))
+----
+
+If the password is wrong, an *+IOException+* is thrown and no connection is established.
+
+Support for HIGH Authentication according to IEC 62056-62 has been implemented but is not tested up to this point, as we have no access to a smart meter supporting this authentication.
+
+Reading multiple samples
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can read multiple values with one request by chaining multiple *+GetParameter+* object into one +connection.get()+ call. Additionaly, you can copy *+GetParameter+* objects with new attribute ids or logical names using +changeAttributeId()+ and +changeObisCode()+. Note that +*GetParameter*+, like most other classes used to communicate with the library, is immutable. The object that is used to call +changeAttribute()+ will still refer to the same data as before the call.
+
+To read the time zone and clock base additionally to the current time, you could add the following code:
+
+[source,Java]
+----
+// Get parameter to read timezone
+// - Attribute ID: 3 (timezone)
+// - Interface class & Obis code same as getClock request
+GetParameter getTimezone = getClock.changeAttributeId(3);
+
+// Get parameter to read clock base
+// - Attribute ID: 9 (clock base)
+// - Interface class & Obis code same as getClock request
+GetParameter getClockBase = getClock.changeAttributeId(9);
+
+// Read all three parameter with a single operation
+List<GetResult> getResults = connection.get(1000, getClock, getTimezone, getClockBase);
+----
+
+The jDLMS library will return a list of *+GetResults+*, the order of results is the same as the order of parameters inside the +get(...)+ call. Beware that each operation can fail on its own, you have to check every *+GetResult+* item if the operation was successful. An Exception is only thrown if there was a problem with the communication itself.

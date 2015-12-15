@@ -1,0 +1,6 @@
+<GetRequest>
+  <GetRequestForNextDataBlock>
+    <InvokeIdAndPriority Value="81" />
+    <BlockNumber Value="00000001" />
+  </GetRequestForNextDataBlock>
+</GetRequest>

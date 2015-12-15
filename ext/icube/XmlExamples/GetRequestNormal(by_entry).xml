@@ -1,0 +1,21 @@
+<GetRequest>
+  <GetRequestNormal>
+    <InvokeIdAndPriority Value="C1" />
+    <AttributeDescriptor>
+      <ClassId Value="0007" />
+      <InstanceId Value="0100620200FF" />
+      <AttributeId Value="02" />
+    </AttributeDescriptor>
+    <AccessSelection>
+      <AccessSelector Value="02" />
+      <AccessParameters>
+        <Structure Qty="0004" >
+          <DoubleLongUnsigned Value="00000001" />
+          <DoubleLongUnsigned Value="00000001" />
+          <LongUnsigned Value="0001" />
+          <LongUnsigned Value="0001" />
+        </Structure>
+      </AccessParameters>
+    </AccessSelection>
+  </GetRequestNormal>
+</GetRequest>

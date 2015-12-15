@@ -1,0 +1,85 @@
+//---------------------------------------------------------------------------;
+// ADK/HD documentation : ppm_headend (author : michael@prepaidmeters.com)
+//                      : 2015/11/27 : 15:33 PM
+//---------------------------------------------------------------------------;
+
+ - Adapter Developer Kit (ADK) & thoughts on HD :
+
+   There should be some enumerable interface in order to expose functionality
+   and method invocation. My thoughts surrounding this relate to a compiled
+   library with embedded methods. These can be compiled into a container,
+   which can be called and use to invoke the HD (head/end) system.
+
+   A variety of static libraries will deal with the HD system. These can be
+   called from a generic template or ADK mechanism. A clear and open standard
+   will be written to display and document the ADK API and any subsequent
+   usage.
+
+   <protocol type-ADK-plugin> --- <HD/system -> protocol> -- <METER>
+
+   There are distinct issues surrounding the protocol deployment, as it 
+   requires that the standard is kept unique. I need to find a way to
+   employ a translation mechanism, unfortunately - the expected protocol
+   implementation has to remain the same. This is some way makes the
+   point of writing the HD/protocol interface moot.
+
+   Currently, I see no way around the reality that I will need to support
+   every potential protocol. There really isn't a way to adapt this.
+   I think this requires further thought. I really wish to write a system
+   that is openly adaptable, thus dispensing with individual protocol
+   requirements. 
+
+   It might be possible for the ADK->METER system to be undisturbed,
+   thus in writing for the external system (METER), the adk interface
+   is kept vanilla. Thus, the HD system provides a variety of corollary
+   methods and functions which lighten the load and provide assistance
+   in communicating to the meter. The standard will have to be defined
+   with the plug-in and based on certain requirements in the API, as it
+   directly communicates with the meter. I think I need to emphasize
+   the fact that the HD system works somewhat in parallel to the 
+   ADK-plugin, and only acts as an advocate. (A list of methods and
+   functions are provided for, yet this in no way distracts from the
+   plug-in communication with the meter)
+
+   So :
+
+   <protocol type-ADK-plugin> <---> <METER>
+              |
+   <HD/system -> protocol>
+
+   Or :
+
+   <protocol type-ADK-plugin> 
+              |
+   <HD/system (no translation?) -> protocol> <---> <METER>
+
+   Thought needs to be given to what functionality the HD/ADK system will
+   provide for. What are the core goals of the HD & ADK system?
+
+   See as follows :
+
+   |-----
+   | HD -> transparent layer -> protocol
+   |
+
+   return_date_type function_definition (arguments, ...) {
+   }
+
+   Thought needs to be given towards the API exposure. What methods will
+   be useful towards adapting access to and from the meter. I think it's
+   important to emphasize that the HD system is only an assistant in the
+   process. 
+
+   some core/functions/methods :
+
+   connect?    - (TCP/IP) (host/port)
+   disconnect? - (TCP/IP)
+
+   A lot of my recent activity is just in using the provided source 
+   repository for a DLMS/COSEM compliant client. Having to refactor
+   the DLMS software (GURUX) - it's a massive task. Thus, I am 
+   rewriting the code whilst simultaneously using a compiled (UNIX) 
+   version to interact with a DLMS/enabled meter. I am not entirely
+   sure as to how this is going to translate into a base of
+   functionality - this has yet to be seen.
+

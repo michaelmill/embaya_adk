@@ -1,0 +1,8 @@
+<WriteRequest Qty="0001" >
+  <ListOfVariableAccessSpecification Qty="0001">
+    <VariableName Value="2BC8" />
+  </ListOfVariableAccessSpecification>
+  <ListOfData Qty="0001">
+    <OctetString Value = "" />
+  </ListOfData>
+</WriteRequest>

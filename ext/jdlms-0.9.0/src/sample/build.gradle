@@ -1,0 +1,8 @@
+
+dependencies {
+  compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.9'
+  compile files('../../dependencies/rxtxcomm_api-2.2pre2_bundle.jar')
+  compile project(':jdlms-api')
+  
+  runtime project(':jdlms-client')
+}

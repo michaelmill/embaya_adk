@@ -1,0 +1,165 @@
+//---------------------------------------------------------------------------;
+// API documentation : ppm_headend (author : michael@prepaidmeters.com)
+//                   : 2015/10/29 : 12:40 PM
+//---------------------------------------------------------------------------;
+
+The static libraries (.a) are compiled with the ppm API in mind. 
+
+An alternative to this is to use a daemon to process any incoming requests.
+
+Or a combination of a -- ?
+
+By exposing certain functionality - 
+
+API {
+
+	- CALLER_INTERFACE
+        - GENERIC OR NON GENERIC PROTOCOL DEFINITION
+
+          How is the API going to interact with the external protocol definition?
+          I suspect some defined standard would be of use.
+
+          What does the headend actually do? and in exposing ceetain API functions,
+          how is this going to relate and communicate with a proprietary protocol
+          that is externally defined. The idea and usage of an external interface
+          is to allow developers to link in the head end functionality and 
+          being able to "plug-in" their protocol implementations.
+
+          API-HOOK-1 {
+             <function exposed> : <-> PROTOCOL - metering protocol, 
+                                : Client/Server architecture?
+                                : Request/Respond, syn/ack.
+                                : Specify interface for interaction. What this means
+                                  is that there is a standard interface for interacting
+                                  with network requests and responses. This should be
+                                  designed in such a way that it allows for any kind
+                                  of protocol exchange.
+
+                                  The ADK/plugin contains all the protocol based implementation
+                                  for communicating to the meter. Any control & management
+                                  processes are dealt with by the head/end.
+
+                                (General routing procedure)
+
+                                -----------------          -----------------          -----------------
+                                | meter/device  | <--IP--> | ADK/plugin    | <------> | head/end      |
+                                                          Calling entry point?
+                                -----------------          -----------------          -----------------
+                                                                 (OR)
+                                -----------------          -----------------          -----------------
+                                | meter/device  | <--IP--> | head/end      | <------> | ADK/plugin    |
+                                                       	  Calling entry point?
+                                -----------------          ----------------- 	      -----------------
+                                                                 (OR)
+                                -----------------          -----------------          -----------------
+                                | meter/device  | <--IP--> | head/end      | <--IP--> | ADK/plugin    |
+                                                       	  Calling entry point?       Calling entry point?
+                                -----------------          ----------------- 	      -----------------
+
+                  <pseudo code> :
+                                
+                                main () { // Sitting in head-end
+                                          // Compilation will be left at object level (.o), making
+                                          // the head-end software compatible with the overall compilation
+                                          // of the software. (static libraries / plugins)
+
+                                   call_external_proc (); // Call external procedure found in compiled libraries.
+                                                          // The question here is to how the API interface is
+                                                          // exposed on the basis of communicating on a
+                                                          // closed level. 
+                                                          //
+                                                          // By writing the software in such a way that the project
+                                                          // is closed, dispenses with the need for TCP/IP interaction
+                                                          // between the plug-in & the API. This provides for a
+                                                          // remarkable speed up in terms of computation time.
+                                                          // All API calls are routed internally of the software
+                                                          // between the API and the plug-in. 
+                                                          //
+                                                          // The real network transmission is dealt with by the head-end.
+                                                          //
+                                                          // The API needs to be able to reinterpret the protocol
+                                                          // which the plug-in exposes. (This is crucial!)
+
+                                   // External static library provides implementation detail, yet does not
+                                   // instantiate an entry point. The API deals with specific standard calling
+                                   // conventions to follow. 
+                                   //
+                                   // call_external_proc() - 
+
+                                }
+              <pseudo topology> : // a foundation here is the translation layer between the protocol (plug-in)
+                                : // and the transmission of data found in the head-end. 
+                                :
+                                : keys,
+                                  EP     = Entry point.
+                                  API    = Application Programming Interface.
+                                  P      = Protocol.
+                                  S      = Server.
+                                  C      = Client.
+                                  H      = Head/end.
+                                  R      = Request.
+                                  Q      = Response.
+
+                                   <H - EP - S> (API) (Q) <--> (R) (P/plugin - C)
+
+                                        // Embedded within the API is a nomenclature to dealing with any potential
+                                        // protocol distinction. The fundamental way of dealing with this is to use
+                                        // a client/server architecture with the high level details dealt with by
+                                        // the plugin. The basic network transmission is dealt with by the head/end.
+
+             <function exposed> : <-> PROTOCOL - SMTP.
+                                : S: 220 smtp.example.com ESMTP Postfix
+                                : C: HELO relay.example.org 
+                                : S: 250 Hello relay.example.org, I am glad to meet you
+                                : C: MAIL FROM:<bob@example.org>
+                                : S: 250 Ok
+                                : C: RCPT TO:<alice@example.com>
+                                : S: 250 Ok
+                                : C: RCPT TO:<theboss@example.com>
+                                : S: 250 Ok
+                                : C: DATA
+                                : S: 354 End data with <CR><LF>.<CR><LF>
+                                : C: From: "Bob Example" <bob@example.org>
+                                : C: To: "Alice Example" <alice@example.com>
+                                : C: Cc: theboss@example.com
+                                : C: Date: Tue, 15 January 2008 16:02:43 -0500
+                                : C: Subject: Test message
+                                : C: 
+                                : C: Hello Alice.
+                                : C: This is a test message with 5 header fields and 4 lines in the message body.
+                                : C: Your friend,
+                                : C: Bob
+                                : C: .
+                                : S: 250 Ok: queued as 12345
+                                : C: QUIT
+                                : S: 221 Bye
+                                : {The server closes the connection}S: 220 smtp.example.com ESMTP Postfix
+                                : C: HELO relay.example.org 
+                                : S: 250 Hello relay.example.org, I am glad to meet you
+                                : C: MAIL FROM:<bob@example.org>
+                                : S: 250 Ok
+                                : C: RCPT TO:<alice@example.com>
+                                : S: 250 Ok
+                                : C: RCPT TO:<theboss@example.com>
+                                : S: 250 Ok
+                                : C: DATA
+                                : S: 354 End data with <CR><LF>.<CR><LF>
+                                : C: From: "Bob Example" <bob@example.org>
+                                : C: To: "Alice Example" <alice@example.com>
+                                : C: Cc: theboss@example.com
+                                : C: Date: Tue, 15 January 2008 16:02:43 -0500
+                                : C: Subject: Test message
+                                : C: 
+                                : C: Hello Alice.
+                                : C: This is a test message with 5 header fields and 4 lines in the message body.
+                                : C: Your friend,
+                                : C: Bob
+                                : C: .
+                                : S: 250 Ok: queued as 12345
+                                : C: QUIT
+                                : S: 221 Bye
+                                : {The server closes the connection}
+             <function exposed> : 
+             <function exposed> : 
+          }
+}
